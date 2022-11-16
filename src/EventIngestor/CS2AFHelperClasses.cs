@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// Using from https://github.com/PlayFab/PlayFab-Samples/blob/master/Samples/CSharp/AzureFunctions/CS2AFHelperClasses.cs
 namespace EventIngestor
 {
     // Shared models
@@ -23,7 +24,7 @@ namespace EventIngestor
     {
     }
 
-    // Models via Player PlayStream event, entering or leaving a 
+    // Models via Player PlayStream event, entering or leaving a
     // player segment or as part of a player segment based scheduled task.
     public class PlayerPlayStreamFunctionExecutionContext<T>
     {
@@ -60,7 +61,7 @@ namespace EventIngestor
     {
     }
 
-    // Models via entity PlayStream event, entering or leaving an 
+    // Models via entity PlayStream event, entering or leaving an
     // entity segment or as part of an entity segment based scheduled task.
     public class EventFullName
     {
