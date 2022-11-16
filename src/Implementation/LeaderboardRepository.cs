@@ -3,11 +3,11 @@ using StackExchange.Redis;
 
 namespace LevelLeaderboards.Implementation;
 
-public class Leaderboard
+public class LeaderboardRepository
 {
     private readonly IConnectionMultiplexer connectionMultiplexer;
 
-    public Leaderboard(IConnectionMultiplexer connectionMultiplexer)
+    public LeaderboardRepository(IConnectionMultiplexer connectionMultiplexer)
     {
         this.connectionMultiplexer = connectionMultiplexer;
     }
