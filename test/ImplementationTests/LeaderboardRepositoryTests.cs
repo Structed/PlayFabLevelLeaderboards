@@ -15,12 +15,22 @@ public class LeaderboardRepositoryTests
     }
 
     [Fact]
-    public void Test1()
+    public void Test_AddEntry_DoesNotFail()
     {
         var levelId = "level-1";
         var playerId = "player-1";
-        var score = 100;
+        var score = 1000;
         leaderboardRepository.AddEntry(levelId, playerId, score);
-        Assert.True(true);
+    }
+
+    [Fact]
+    public void Test_GetRankReturnsRank()
+    {
+        var levelId = "level-1";
+        var playerId = "player-1";
+        var score = 1000;
+        leaderboardRepository.AddEntry(levelId, playerId, score);
+        var rank = leaderboardRepository.GetRank(levelId, playerId);
+        Assert.NotEqual(0, rank);
     }
 }
