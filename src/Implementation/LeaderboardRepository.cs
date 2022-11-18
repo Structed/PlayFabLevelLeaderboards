@@ -2,7 +2,7 @@
 
 namespace LevelLeaderboards.Implementation;
 
-public class LeaderboardRepository
+public class LeaderboardRepository : ILeaderboardRepository
 {
     private readonly IConnectionMultiplexer connectionMultiplexer;
 
