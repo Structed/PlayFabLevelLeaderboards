@@ -3,15 +3,25 @@ using StackExchange.Redis;
 
 namespace ImplementationTests;
 
-public class LeaderboardRepositoryTests
+public class LeaderboardRepositoryTests: IDisposable
 {
     private LeaderboardRepository leaderboardRepository;
+    private ConnectionMultiplexer redis;
 
     public LeaderboardRepositoryTests()
     {
-        ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING"));
+        redis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING"));
         var db = redis.GetDatabase();
         leaderboardRepository = new LeaderboardRepository(redis);
+    }
+
+    // ReSharper disable once UnusedMember.Global
+    public void Dispose()
+    {
+        foreach (var server in redis.GetServers())
+        {
+            server.FlushDatabase();
+        }
     }
 
     [Fact]
@@ -31,6 +41,29 @@ public class LeaderboardRepositoryTests
         var score = 1000;
         leaderboardRepository.AddEntry(levelId, playerId, score);
         var rank = leaderboardRepository.GetRank(levelId, playerId);
-        Assert.NotEqual(0, rank);
+        Assert.NotEqual(1, rank);
     }
+
+     [Fact]
+     public void Test_GetTopReturnsAtLeastOneItem()
+     {
+         var totalEntries = 3;
+         var levelId = "level-1";
+         var playerIdPrefix = "player-";
+
+         for (var i = 0; i < totalEntries; i++)
+         {
+             leaderboardRepository.AddEntry(levelId, playerIdPrefix + i, i);
+         }
+
+         var top = leaderboardRepository.GetTop(levelId, totalEntries);
+         Assert.NotEmpty(top);
+
+         for (var i = totalEntries - 1; i > 0; i--)
+         {
+             var element = top[i];
+             Assert.Equal(element.TitlePlayerId, playerIdPrefix + i);
+             Assert.Equal(element.Rank, i);
+         }
+     }
 }
