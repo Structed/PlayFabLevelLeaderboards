@@ -5,12 +5,16 @@ namespace ImplementationTests;
 
 public class LeaderboardRepositoryTests: IDisposable
 {
-    private LeaderboardRepository leaderboardRepository;
-    private ConnectionMultiplexer redis;
+    private readonly LeaderboardRepository leaderboardRepository;
+    private readonly ConnectionMultiplexer redis;
 
     public LeaderboardRepositoryTests()
     {
-        redis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING"));
+        redis = ConnectionMultiplexer.Connect(
+            Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING") ?? throw new ArgumentNullException(
+                "REDIS_CONNECTION_STRING",
+                "Environment Variable not set"
+        ));
         var db = redis.GetDatabase();
         leaderboardRepository = new LeaderboardRepository(redis);
     }
