@@ -68,6 +68,40 @@ sequenceDiagram
 * Azure BlobStorage, or use [Azurite](https://github.com/Azure/Azurite) as a local storage emulator.
 
 # Deploying
+For most tasks, you can just use the [Nuke Build](https://nuke.build) setup in the project.
+
+## Set up Azure
+
+First, set up some environment variables (or get prompted for them in Nuke). However, I would suggest you set the environment variables, as this makes things less of a hassle later on and would also be closer to what you would do in a CI/CD environment.
+
+| Name | Description |
+| --- | --- |
+| `LEADERBOARDS_AZURE_SUBSCRIPTION_ID` | The Azure Subscription ID |
+| `LEADERBOARDS_AZURE_TENANT_ID` | The Azure Tenant ID |
+| `LEADERBOARDS_RESOURCE_GROUP_NAME` | The name of the Resource Group to create |
+| `LEADERBOARDS_AZURE_LOCATION` | The Azure Location to create the resources in |
+
+### Initialize Azure (one-time setup)
+In order to use the Terraform configuration that ships with this project, you need to have an existing resource group and an existing Service Principal, which has the proper permissions to manage resources in the given resource group.
+While you can set this up yourself, I would suggest you use the `InitializeAzure` target in Nuke to do this for you:
+
+Bash
+```bash
+  ./build --target InitializeAzure
+```
+
+Powershell
+```powershell
+  .\build.ps1 --target InitializeAzure
+```
+
+This will do three things for you:
+1. Call `az login` to log you into Azure
+2. Create a Resource Group in the given location
+3. Create a Service Principal, and assign it the proper permissions to manage resources in the given resource group.
+
+You can carry call these tasks individually, if you'd like. Just call the build script with the `--help` parameter to see all possible targets or inspect the [Build.cs](./build/Build.cs) file.
+
 ## PlayFab
 * Get your Title ID (from the Game Studio dashboard or from the GameManager)
 * Get a developer secret key:
