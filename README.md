@@ -54,7 +54,9 @@ sequenceDiagram
 
 # Prerequisites
 * [Azure Subscription](https://azure.microsoft.com/en-us/solutions/gaming/) ( or [sign up for ID@Azure](https://azure.com/id) )
-* [Azure Service Principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal)
+* Azure Service Principal - Create via:
+  * [Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal)
+  * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli)
 * [Terraform](https://terraform.io)
 * [Azure PlayFab Account](https://playfab.com/)
 * [.NET 6](https://dot.net)
