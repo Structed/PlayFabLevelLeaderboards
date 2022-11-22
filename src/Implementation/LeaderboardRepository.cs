@@ -19,7 +19,12 @@ public class LeaderboardRepository : ILeaderboardRepository
     public long GetRank(string levelId, string titlePlayerId)
     {
         var result = connectionMultiplexer.GetDatabase().SortedSetRank(GetKey(levelId), titlePlayerId, Order.Descending);
-        var rank = result.GetValueOrDefault();
+        if (result == null)
+        {
+            throw new NoLeaderboardEntryFoundException(levelId, titlePlayerId);
+        }
+
+        long rank = result.GetValueOrDefault();
 
         return rank;
     }

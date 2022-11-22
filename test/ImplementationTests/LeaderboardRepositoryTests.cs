@@ -38,6 +38,20 @@ public class LeaderboardRepositoryTests: IDisposable
     }
 
     [Fact]
+    public void Test_GetRankWithNoEntriesThrowsException()
+    {
+        // Arrange
+        var levelId = "level-1";
+        var playerId = "player-1";
+
+        // Act
+        void Action() => leaderboardRepository.GetRank(levelId, playerId);
+
+        // Assert
+        Assert.Throws<NoLeaderboardEntryFoundException>((Action)Action);
+    }
+
+    [Fact]
     public void Test_GetRankReturnsRank()
     {
         var levelId = "level-1";
