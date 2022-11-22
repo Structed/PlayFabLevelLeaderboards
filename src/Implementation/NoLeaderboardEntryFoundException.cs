@@ -5,7 +5,7 @@ public class NoLeaderboardEntryFoundException: Exception
     private readonly string levelId;
     private readonly string titlePlayerId;
 
-    public NoLeaderboardEntryFoundException(string levelId, string titlePlayerId) : base()
+    public NoLeaderboardEntryFoundException(string levelId, string titlePlayerId) : base($"Could not find leaderboard entry for level {levelId} and player {titlePlayerId}")
     {
         this.levelId = levelId;
         this.titlePlayerId = titlePlayerId;
