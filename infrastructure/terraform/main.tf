@@ -91,7 +91,7 @@ resource "azurerm_function_app" "function_publicapi" {
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = 1
     "WEBSITE_RUN_FROM_PACKAGE"        = 1
     "FUNCTIONS_WORKER_RUNTIME"        = "dotnet"
-    "REDIS_CONNECTION_STRING"         = module.redis.connection_strings[0]
+    "REDIS_CONNECTION_STRING"         = module.redis.primary_connection_string
     "PlayFabTitleId"                  = var.pf_title_id
     "PlayFabDeveloperSecret"          = var.pf_developer_secret
   }
