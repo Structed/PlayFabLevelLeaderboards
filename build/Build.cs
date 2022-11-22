@@ -31,7 +31,7 @@ class Build : NukeBuild
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Parameter("The name of the Azure Resource Group to be used")]
-    readonly string ResourceGroupName = Environment.GetEnvironmentVariable("LEADERBOARDS_RESOURCE_GROUP_NAME");
+    readonly string ResourceGroupName = "pfleaderboards-rg";   //Environment.GetEnvironmentVariable("LEADERBOARDS_RESOURCE_GROUP_NAME");
 
     [Parameter("The Azure Region to deploy resources to")]
     readonly string AzureLocation  = Environment.GetEnvironmentVariable("LEADERBOARDS_AZURE_LOCATION");

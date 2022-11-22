@@ -7,7 +7,7 @@
 variable "prefix" {
   type        = string
   description = "Resource Name prefix (will be applied to all resource names, including the resource group"
-  default     = "pfmatchhistory"
+  default     = "pfleaderboards"
 }
 
 variable "tags" {
