@@ -15,7 +15,7 @@ public class PostScore
     }
 
     [Function("PostScore")]
-    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "add/levelId/{levelId}/titlePlayerId/{titlePlayerId}/score/{score:int}")] HttpRequestData req, string levelId, string titlePlayerId, int score,
+    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "add/levelId/{levelId}/titlePlayerId/{titlePlayerId}/score/{score:int}")] HttpRequestData req, string levelId, string titlePlayerId, int score,
         FunctionContext executionContext)
     {
          this.leaderboardRepository.AddEntry(levelId, titlePlayerId, score);
