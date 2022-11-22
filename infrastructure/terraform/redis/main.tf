@@ -1,5 +1,5 @@
 resource "azurerm_redis_cache" "redis" {
-  name                = "example-cache"
+  name                = "pf-level-leaderboard"
   location            = var.resource_group.location
   resource_group_name = var.resource_group.name
   capacity            = var.capacity
