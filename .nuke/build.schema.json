@@ -26,6 +26,10 @@
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
         },
+        "DeploymentSlot": {
+          "type": "string",
+          "description": "The Deployment Slot for the Azure Function"
+        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -89,10 +93,16 @@
               "Compile",
               "CreateResourceGroup",
               "CreateServicePrincipal",
+              "Deploy",
               "InitializeAzure",
+              "Publish",
               "Restore"
             ]
           }
+        },
+        "Solution": {
+          "type": "string",
+          "description": "Path to a solution file that is automatically loaded"
         },
         "Target": {
           "type": "array",
@@ -105,7 +115,9 @@
               "Compile",
               "CreateResourceGroup",
               "CreateServicePrincipal",
+              "Deploy",
               "InitializeAzure",
+              "Publish",
               "Restore"
             ]
           }
