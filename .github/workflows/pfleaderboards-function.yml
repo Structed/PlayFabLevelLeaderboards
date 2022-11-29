@@ -42,5 +42,5 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.pfleaderboards_function_9D13 }}
+        publish-profile: ${{ secrets.pfleaderboards_function_373D }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
