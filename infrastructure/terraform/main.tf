@@ -81,7 +81,7 @@ resource "azurerm_function_app" "function_publicapi" {
   storage_account_access_key = azurerm_storage_account.storage.primary_access_key
 
   enabled                = true
-  enable_builtin_logging = true
+  enable_builtin_logging = false
   https_only             = true
   version                = "~4"
 
