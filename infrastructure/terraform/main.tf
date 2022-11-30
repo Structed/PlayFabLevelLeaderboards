@@ -89,7 +89,6 @@ resource "azurerm_function_app" "function_publicapi" {
   app_settings = {
     "APPINSIGHTS_INSTRUMENTATIONKEY"  = "${azurerm_application_insights.apinsights_publicapi.instrumentation_key}"
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = 1
-    "WEBSITE_RUN_FROM_PACKAGE"        = 1
     "FUNCTIONS_WORKER_RUNTIME"        = "dotnet"
     "REDIS_CONNECTION_STRING"         = module.redis.primary_connection_string
     "PlayFabTitleId"                  = var.pf_title_id
