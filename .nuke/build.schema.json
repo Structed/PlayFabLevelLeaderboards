@@ -95,7 +95,6 @@
               "CreateServicePrincipal",
               "Deploy",
               "InitializeAzure",
-              "Publish",
               "Restore"
             ]
           }
@@ -117,7 +116,6 @@
               "CreateServicePrincipal",
               "Deploy",
               "InitializeAzure",
-              "Publish",
               "Restore"
             ]
           }

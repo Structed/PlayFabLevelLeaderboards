@@ -6,6 +6,7 @@ using System.Reflection.PortableExecutable;
 using Newtonsoft.Json;
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -17,7 +18,13 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.IO.CompressionTasks;
+using static Nuke.Common.Tools.Npm.NpmTasks;
 
+[GitHubActions(
+    "continuous",
+    GitHubActionsImage.UbuntuLatest,
+    On = new[] { GitHubActionsTrigger.Push },
+    InvokedTargets = new[] { nameof(Deploy) })]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -39,6 +46,9 @@ class Build : NukeBuild
     [PathExecutable]
     readonly Tool Az;
 
+    [PathExecutable]
+    readonly Tool Func;
+
     [Parameter("The Deployment Slot for the Azure Function")]
     readonly string DeploymentSlot = String.Empty;
 
@@ -53,6 +63,11 @@ class Build : NukeBuild
 
     [Parameter("The Azure Subscription ID to deploy into")]
     readonly string AzureSubscriptionId  = Environment.GetEnvironmentVariable("LEADERBOARDS_AZURE_SUBSCRIPTION_ID");
+
+    public Build()
+    {
+        Npm("i -g azure-functions-core-tools@4 --unsafe-perm true");
+    }
 
     Target Clean => _ => _
         .Before(Restore)
@@ -78,40 +93,12 @@ class Build : NukeBuild
                 .SetProjectFile(Solution));
         });
 
-    Target Publish => _ => _
-        .DependsOn(Compile)
-        .Requires(() => DeploymentSlot)
-        .Executes(() =>
-        {
-            DotNetPublish(_ => _
-                .SetProject(Solution.GetProject("LevelLeaderboards.Web"))
-                .SetOutput(OutputDirectory)
-                .SetConfiguration(Configuration)
-                .EnableNoBuild()
-            );
-
-            CompressZip(
-                OutputDirectory,
-                ZipPath,
-                // filter: x => !x.Extension.EqualsAnyOrdinalIgnoreCase(ExcludedExtensions),
-                compressionLevel: CompressionLevel.SmallestSize,
-                fileMode: FileMode.CreateNew);
-        });
-
     Target Deploy => _ => _
-        .DependsOn(Publish)
+        .DependsOn(Compile)
         .Requires(() => ResourceGroupName)
         .Executes(() =>
         {
-            // https://learn.microsoft.com/en-us/cli/azure/functionapp/deployment/source?view=azure-cli-latest#az-functionapp-deployment-source-config-zip
-            var arguments = $"functionapp deployment source config-zip --src {ZipPath} --resource-group {ResourceGroupName} --name {AppName} --build-remote";
-
-            if (DeploymentSlot != String.Empty && DeploymentSlot.ToLower() != "production")
-            {
-                arguments += $" --slot {DeploymentSlot}";
-            }
-
-            Az(arguments);
+            Func($"azure functionapp publish {AppName}", Solution.GetProject("LevelLeaderboards.Web")?.Directory);
         });
 
     Target InitializeAzure => _ => _
